@@ -1,0 +1,227 @@
+---
+title: "r-reports-from-trello"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{r-reports-from-trello}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+<style>
+.sticker {
+    display: inline;
+    background-color: #6562bd;
+    color: white;
+    border: solid;
+    border-color: #06009e;
+    padding-left: 1ex;
+    padding-right: .5ex;
+    padding-top: .1ex;
+    padding-bottom: .1ex;
+    margin-right: 1ex;
+    border-width:1pt;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.header-sticker {
+    display: inline;
+    background-color: #2ca25f;
+    color: white;
+    border: solid;
+    border-color: #06009e;
+    padding-left: 1ex;
+    padding-right: .5ex;
+    margin-right: 1ex;
+    border-width:1pt;
+    font-weight: bold;
+    border-radius: 12px;
+}
+.checkmark {
+    display:inline-block;
+    width: 22px;
+    height:22px;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}.checkmark_stem {
+    position: absolute;
+    width:3px;
+    height:9px;
+    background-color:green;
+    left:11px;
+    top:6px;
+}.checkmark_kick {
+    position: absolute;
+    width:3px;
+    height:3px;
+    background-color:green;
+    left:8px;
+    top:12px;
+}</style>
+
+# Overview
+The goal of the Repello package is to obtain information from a Trello board and
+view the contents in a more user-friendly fashion.  This package will allow a
+user to store the information from Trello cards, including card checklists and 
+date of last modification.  The package also allows two saved Trello objects to
+be compared to check for changes to the status and items of card checklist tasks.
+
+# Installation
+```{r, eval=FALSE}
+install.packages("repello")
+```
+
+# Getting Started
+
+## Loading supplementary packages
+```{r, warning=FALSE}
+suppressPackageStartupMessages(require(repello))
+#Note: you may want to also install the following packages for well-formatted report tables
+suppressPackageStartupMessages(require(knitr))
+suppressPackageStartupMessages(require(kableExtra))
+```
+
+## Setting the user token
+Using this package requires you to have your own Trello account.  This package
+obtains information from Trello boards using API calls.  To access Trello
+information, you first need to obtain your unique user token.  Access to a user
+token can be found by logging into Trello and visiting `https://trello.com/app-key`,
+then by clicking on "Manually generate a token".  Once you have generated your 
+token, save it into a text file somewhere on your computer.  Be sure to set your
+working directory to the  file location before you attempt to run the code.
+
+Setting the user token is a critical first step for using this package.  Always
+be sure to set the token prior to using any of the other functions in this
+package
+
+```{r, eval=FALSE}
+set_token("user_token.txt")
+```
+
+# Viewing information for a specified Trello board
+
+All you need to get started with the Repello package is the name of the board
+you want to view.  This example will use the board 
+"Repello - R Reports from Trello".  You can access this board on Trello for
+reference at https://trello.com/b/CMNHqjea/repello-r-reports-from-trello.
+
+The cards_info function allows you to view the card information from a board.
+
+```{r, eval=FALSE}
+activity <- cards_info(get_board_id("Repello - R Reports from Trello"))
+head(activity) %>% kable(escape=F, align="cl") %>% trimws %>% kable_styling(c("striped","bordered"))
+```
+
+```{r, echo=FALSE}
+activity <- readRDS("activity.rds")
+head(activity) %>% kable(escape=F, align="cl") %>% trimws %>% kable_styling(c("striped","bordered"))
+```
+
+## Checklists
+
+The all_checklists function can be used to view all card information and
+accompanying checklists in a list format.
+
+```{r, eval=FALSE}
+trello_object <- all_checklists("Repello - R Reports from Trello", save=FALSE)
+#save can be set to 'TRUE' if you want to save the current Trello object for 
+#later comparison
+trello_object[[4]]
+```
+
+```{r, echo=FALSE}
+trello_object <- readRDS("trello_object.rds")
+trello_object[[4]]
+```
+
+Viewing a sample of one of the board's cards, you can see that six different 
+pieces of information are presented: the name of the card, the card ID, the date
+of last modification, the Trello list the card is on, and the items and their
+respective status on a card checklist.  If no list is present, the only item
+will be "No checklist for this project.
+
+```{r}
+trello_object[[2]]
+```
+
+# Comparing two Trello objects
+
+One of the main goals of this package is to compare the Trello board at two
+different time points to check for changes made to the checklists.  The
+trello_updates function can locate any new tasks or status changes made to the 
+Trello cards, and can also determine if any new cards have been added since the 
+last saved object.
+
+```{r, eval=FALSE}
+report <- trello_updates("Repello - R Reports from Trello", prior="old_object.rds", save=FALSE)
+#Note: If 'prior' is not specified, the function will automatically find the most recent saved 
+#Trello object to compare to the current rendition.  The function can also accept a 'recent' 
+#argument if you want to compare two lists from different time points.
+
+report[[4]]
+```
+
+```{r, echo=FALSE}
+report <- readRDS("report.rds")
+report[[4]]
+```
+
+If a card appears on the newest Trello object, but was absent from the prior 
+rendition, it will be marked as a new card and all checklist items will be 
+considered new items.
+
+```{r}
+report[[5]]
+```
+
+Some cards do not have checklists.  If this happens, repello will leave the
+list_diff element empty for the card.
+
+```{r}
+report[[2]]
+```
+
+# Creating a Trello Report
+
+The following code is used to create a kable-formatted report of the tasks and 
+status of items for each checklist on a recent Trello object compared to a 
+prior Trello list from the same board.  The functions used above are utilized here.
+
+```{r, eval=FALSE}
+set_token("user_token.txt")
+report <- trello_updates("Repello - R Reports from Trello", prior="old_object.rds", save=FALSE)
+
+```
+
+```{r, results='asis'}
+new_sticker <- "<div class='sticker'>NEW</div>"
+new_headersticker <- "<div class='header-sticker'>NEW</div>"
+checkmark <- "<span class='checkmark'><div class='checkmark_stem'></div><div class='checkmark_kick'></div></span>"
+
+for (i in 1:length(report)){
+  if (report[[i]]$contains_list=="List Available" & ("New Item" %in% (report[[i]]$list_diff)$history | "Newly Completed" %in% (report[[i]]$list_diff)$status)){
+    if (report[[i]]$card_status=="New Card"){
+      cat("<h2>", new_headersticker, report[[i]]$name, "</h2>", sep = " ")
+    } else {
+      cat("## ", report[[i]]$name, "\n\n")
+    }
+    temp <- report[[i]]$list_diff %>% filter(history=="New Item" | status=="Newly Completed")
+    for (j in 1:nrow(temp)){
+      if (temp$history[j]=="New Item"){
+        temp$item[j] <- paste0(new_sticker, temp$item[j])
+      }
+    }
+    for (k in 1:nrow(temp)){
+      if (temp$status[k]=="Newly Completed"){
+        temp$complete[k] <- checkmark
+      } else {
+        temp$complete[k] <- " "
+      }
+    }
+    temp <- temp %>% select(complete, item)
+    colnames(temp) <- c("", "Item")
+    temp %>% kable(escape=F, align="cl") %>% trimws %>% kable_styling(c("striped","bordered")) %>% column_spec(1, "30px") %>% cat
+    cat("  \n")
+  }
+}
+```

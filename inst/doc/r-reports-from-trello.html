@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>r-reports-from-trello</title>
+
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+<script>$(document).ready(function(){
+    if (typeof $('[data-toggle="tooltip"]').tooltip === 'function') {
+        $('[data-toggle="tooltip"]').tooltip();
+    }
+    if ($('[data-toggle="popover"]').popover === 'function') {
+        $('[data-toggle="popover"]').popover();
+    }
+});
+</script>
+<style type="text/css">
+.lightable-minimal {
+border-collapse: separate;
+border-spacing: 16px 1px;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-minimal td {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal th {
+margin-left: 5px;
+margin-right: 5px;
+}
+.lightable-minimal thead tr:last-child th {
+border-bottom: 2px solid #00000050;
+empty-cells: hide;
+}
+.lightable-minimal tbody tr:first-child td {
+padding-top: 0.5em;
+}
+.lightable-minimal.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-minimal.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic {
+border-top: 0.16em solid #111111;
+width: 100%;
+margin-bottom: 10px;
+margin: 10px 5px;
+}
+.lightable-classic caption {
+color: #222222;
+}
+.lightable-classic td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic thead tr:last-child th {
+border-bottom: 0.10em solid #111111;
+}
+.lightable-classic tbody tr:last-child td {
+border-bottom: 0.14em solid #111111;
+}
+.lightable-classic.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-classic-2 {
+border-top: 3px double #111111;
+width: 100%;
+margin-bottom: 10px;
+}
+.lightable-classic-2 caption {
+color: #222222;
+}
+.lightable-classic-2 td {
+padding-left: 5px;
+padding-right: 5px;
+color: #222222;
+}
+.lightable-classic-2 th {
+padding-left: 5px;
+padding-right: 5px;
+font-weight: normal;
+color: #222222;
+}
+.lightable-classic-2 tbody tr:last-child td {
+border-bottom: 3px double #111111;
+}
+.lightable-classic-2 thead tr:last-child th {
+border-bottom: 1px solid #111111;
+}
+.lightable-classic-2.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-classic-2.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #EEE;
+border-collapse: collapse;
+margin-bottom: 10px;
+}
+.lightable-material th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+}
+.lightable-material td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+border-top: 1px solid #eeeeee;
+}
+.lightable-material.lightable-hover tbody tr:hover {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody tr:nth-child(even) {
+background-color: #f5f5f5;
+}
+.lightable-material.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #ddd;
+}
+.lightable-material-dark {
+min-width: 100%;
+white-space: nowrap;
+table-layout: fixed;
+font-family: Roboto, sans-serif;
+border: 1px solid #FFFFFF12;
+border-collapse: collapse;
+margin-bottom: 10px;
+background-color: #363640;
+}
+.lightable-material-dark th {
+height: 56px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF60;
+}
+.lightable-material-dark td {
+height: 52px;
+padding-left: 16px;
+padding-right: 16px;
+color: #FFFFFF;
+border-top: 1px solid #FFFFFF12;
+}
+.lightable-material-dark.lightable-hover tbody tr:hover {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody tr:nth-child(even) {
+background-color: #FFFFFF12;
+}
+.lightable-material-dark.lightable-striped tbody td {
+border: 0;
+}
+.lightable-material-dark.lightable-striped thead tr:last-child th {
+border-bottom: 1px solid #FFFFFF12;
+}
+.lightable-paper {
+width: 100%;
+margin-bottom: 10px;
+color: #444;
+}
+.lightable-paper thead tr:last-child th {
+color: #666;
+vertical-align: bottom;
+border-bottom: 1px solid #00000020;
+line-height: 1.15em;
+padding: 10px 5px;
+}
+.lightable-paper td {
+vertical-align: middle;
+border-bottom: 1px solid #00000010;
+line-height: 1.15em;
+padding: 7px 5px;
+}
+.lightable-paper.lightable-hover tbody tr:hover {
+background-color: #F9EEC1;
+}
+.lightable-paper.lightable-striped tbody tr:nth-child(even) {
+background-color: #00000008;
+}
+.lightable-paper.lightable-striped tbody td {
+border: 0;
+}
+</style>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">r-reports-from-trello</h1>
+
+
+
+<style>
+.sticker {
+    display: inline;
+    background-color: #6562bd;
+    color: white;
+    border: solid;
+    border-color: #06009e;
+    padding-left: 1ex;
+    padding-right: .5ex;
+    padding-top: .1ex;
+    padding-bottom: .1ex;
+    margin-right: 1ex;
+    border-width:1pt;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.header-sticker {
+    display: inline;
+    background-color: #2ca25f;
+    color: white;
+    border: solid;
+    border-color: #06009e;
+    padding-left: 1ex;
+    padding-right: .5ex;
+    margin-right: 1ex;
+    border-width:1pt;
+    font-weight: bold;
+    border-radius: 12px;
+}
+.checkmark {
+    display:inline-block;
+    width: 22px;
+    height:22px;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}.checkmark_stem {
+    position: absolute;
+    width:3px;
+    height:9px;
+    background-color:green;
+    left:11px;
+    top:6px;
+}.checkmark_kick {
+    position: absolute;
+    width:3px;
+    height:3px;
+    background-color:green;
+    left:8px;
+    top:12px;
+}</style>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>The goal of the Repello package is to obtain information from a Trello board and view the contents in a more user-friendly fashion. This package will allow a user to store the information from Trello cards, including card checklists and date of last modification. The package also allows two saved Trello objects to be compared to check for changes to the status and items of card checklist tasks.</p>
+</div>
+<div id="installation" class="section level1">
+<h1>Installation</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;repello&quot;</span>)</span></code></pre></div>
+</div>
+<div id="getting-started" class="section level1">
+<h1>Getting Started</h1>
+<div id="loading-supplementary-packages" class="section level2">
+<h2>Loading supplementary packages</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">require</span>(repello))</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#Note: you may want to also install the following packages for well-formatted report tables</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">require</span>(knitr))</span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="kw">suppressPackageStartupMessages</span>(<span class="kw">require</span>(kableExtra))</span></code></pre></div>
+</div>
+<div id="setting-the-user-token" class="section level2">
+<h2>Setting the user token</h2>
+<p>Using this package requires you to have your own Trello account. This package obtains information from Trello boards using API calls. To access Trello information, you first need to obtain your unique user token. Access to a user token can be found by logging into Trello and visiting <code>https://trello.com/app-key</code>, then by clicking on “Manually generate a token”. Once you have generated your token, save it into a text file somewhere on your computer. Be sure to set your working directory to the file location before you attempt to run the code.</p>
+<p>Setting the user token is a critical first step for using this package. Always be sure to set the token prior to using any of the other functions in this package</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">set_token</span>(<span class="st">&quot;user_token.txt&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="viewing-information-for-a-specified-trello-board" class="section level1">
+<h1>Viewing information for a specified Trello board</h1>
+<p>All you need to get started with the Repello package is the name of the board you want to view. This example will use the board “Repello - R Reports from Trello”. You can access this board on Trello for reference at <a href="https://trello.com/b/CMNHqjea/repello-r-reports-from-trello" class="uri">https://trello.com/b/CMNHqjea/repello-r-reports-from-trello</a>.</p>
+<p>The cards_info function allows you to view the card information from a board.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>activity &lt;-<span class="st"> </span><span class="kw">cards_info</span>(<span class="kw">get_board_id</span>(<span class="st">&quot;Repello - R Reports from Trello&quot;</span>))</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">head</span>(activity) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>(<span class="dt">escape=</span>F, <span class="dt">align=</span><span class="st">&quot;cl&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>trimws <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable_styling</span>(<span class="kw">c</span>(<span class="st">&quot;striped&quot;</span>,<span class="st">&quot;bordered&quot;</span>))</span></code></pre></div>
+<table class="table table-striped table-bordered" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+Card
+</th>
+<th style="text-align:left;">
+ID
+</th>
+<th style="text-align:center;">
+Date last modified
+</th>
+<th style="text-align:left;">
+Trello List
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+Project A
+</td>
+<td style="text-align:left;">
+5f6a1f38e97e9c6baa6c6181
+</td>
+<td style="text-align:center;">
+2020-09-24
+</td>
+<td style="text-align:left;">
+To-do List
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Project B
+</td>
+<td style="text-align:left;">
+5f6a1f3bc677e234eb1697f0
+</td>
+<td style="text-align:center;">
+2020-09-22
+</td>
+<td style="text-align:left;">
+To-do List
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Project C
+</td>
+<td style="text-align:left;">
+5f6a1f40b72a5b53ecce371a
+</td>
+<td style="text-align:center;">
+2020-09-22
+</td>
+<td style="text-align:left;">
+To-do List
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Project D
+</td>
+<td style="text-align:left;">
+5f6a3107975a8523081100ba
+</td>
+<td style="text-align:center;">
+2020-09-22
+</td>
+<td style="text-align:left;">
+To-do List
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Project E
+</td>
+<td style="text-align:left;">
+5f6a33c3f011bd43bcab0b89
+</td>
+<td style="text-align:center;">
+2020-09-22
+</td>
+<td style="text-align:left;">
+To-do List
+</td>
+</tr>
+</tbody>
+</table>
+<div id="checklists" class="section level2">
+<h2>Checklists</h2>
+<p>The all_checklists function can be used to view all card information and accompanying checklists in a list format.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>trello_object &lt;-<span class="st"> </span><span class="kw">all_checklists</span>(<span class="st">&quot;Repello - R Reports from Trello&quot;</span>, <span class="dt">save=</span><span class="ot">FALSE</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="co">#save can be set to &#39;TRUE&#39; if you want to save the current Trello object for </span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">#later comparison</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>trello_object[[<span class="dv">4</span>]]</span></code></pre></div>
+<pre><code>## $name
+## [1] &quot;Project D&quot;
+## 
+## $ID
+## [1] &quot;5f6a3107975a8523081100ba&quot;
+## 
+## $date
+## [1] &quot;2020-09-22&quot;
+## 
+## $list
+## [1] &quot;To-do List&quot;
+## 
+## $item
+## [1] &quot;Item 1&quot; &quot;Item 2&quot; &quot;Item 3&quot; &quot;Item 4&quot; &quot;Item 5&quot; &quot;Item 6&quot; &quot;Item 7&quot;
+## 
+## $status
+## [1] &quot;complete&quot;   &quot;complete&quot;   &quot;incomplete&quot; &quot;complete&quot;   &quot;complete&quot;  
+## [6] &quot;incomplete&quot; &quot;incomplete&quot;</code></pre>
+<p>Viewing a sample of one of the board’s cards, you can see that six different pieces of information are presented: the name of the card, the card ID, the date of last modification, the Trello list the card is on, and the items and their respective status on a card checklist. If no list is present, the only item will be &quot;No checklist for this project.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>trello_object[[<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>## $name
+## [1] &quot;Project B&quot;
+## 
+## $ID
+## [1] &quot;5f6a1f3bc677e234eb1697f0&quot;
+## 
+## $date
+## [1] &quot;2020-09-22&quot;
+## 
+## $list
+## [1] &quot;To-do List&quot;
+## 
+## $item
+## [1] &quot;No checklist for this project&quot;
+## 
+## $status
+## [1] &quot;No checklist for this project&quot;</code></pre>
+</div>
+</div>
+<div id="comparing-two-trello-objects" class="section level1">
+<h1>Comparing two Trello objects</h1>
+<p>One of the main goals of this package is to compare the Trello board at two different time points to check for changes made to the checklists. The trello_updates function can locate any new tasks or status changes made to the Trello cards, and can also determine if any new cards have been added since the last saved object.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>report &lt;-<span class="st"> </span><span class="kw">trello_updates</span>(<span class="st">&quot;Repello - R Reports from Trello&quot;</span>, <span class="dt">prior=</span><span class="st">&quot;old_object.rds&quot;</span>, <span class="dt">save=</span><span class="ot">FALSE</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">#Note: If &#39;prior&#39; is not specified, the function will automatically find the most recent saved </span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co">#Trello object to compare to the current rendition.  The function can also accept a &#39;recent&#39; </span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#argument if you want to compare two lists from different time points.</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6"></a>report[[<span class="dv">4</span>]]</span></code></pre></div>
+<pre><code>## $name
+## [1] &quot;Project D&quot;
+## 
+## $ID
+## [1] &quot;5f6a3107975a8523081100ba&quot;
+## 
+## $card_status
+## [1] &quot;Existing Card&quot;
+## 
+## $contains_list
+## [1] &quot;List Available&quot;
+## 
+## $list_diff
+##     item       history               status
+## 1 Item 1 Existing Item      Newly Completed
+## 2 Item 2 Existing Item Previously Completed
+## 3 Item 3 Existing Item           Incomplete
+## 4 Item 4 Existing Item      Newly Completed
+## 5 Item 5 Existing Item      Newly Completed
+## 6 Item 6      New Item           Incomplete
+## 7 Item 7      New Item           Incomplete</code></pre>
+<p>If a card appears on the newest Trello object, but was absent from the prior rendition, it will be marked as a new card and all checklist items will be considered new items.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>report[[<span class="dv">5</span>]]</span></code></pre></div>
+<pre><code>## $name
+## [1] &quot;Project E&quot;
+## 
+## $ID
+## [1] &quot;5f6a33c3f011bd43bcab0b89&quot;
+## 
+## $card_status
+## [1] &quot;New Card&quot;
+## 
+## $contains_list
+## [1] &quot;List Available&quot;
+## 
+## $list_diff
+##     item  history          status
+## 1 Item 1 New Item Newly Completed
+## 2 Item 2 New Item Newly Completed
+## 3 Item 3 New Item      Incomplete</code></pre>
+<p>Some cards do not have checklists. If this happens, repello will leave the list_diff element empty for the card.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>report[[<span class="dv">2</span>]]</span></code></pre></div>
+<pre><code>## $name
+## [1] &quot;Project B&quot;
+## 
+## $ID
+## [1] &quot;5f6a1f3bc677e234eb1697f0&quot;
+## 
+## $card_status
+## [1] &quot;Existing Card&quot;
+## 
+## $contains_list
+## [1] &quot;No List Available&quot;
+## 
+## $list_diff
+## [1] item    history status 
+## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+</div>
+<div id="creating-a-trello-report" class="section level1">
+<h1>Creating a Trello Report</h1>
+<p>The following code is used to create a kable-formatted report of the tasks and status of items for each checklist on a recent Trello object compared to a prior Trello list from the same board. The functions used above are utilized here.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">set_token</span>(<span class="st">&quot;user_token.txt&quot;</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>report &lt;-<span class="st"> </span><span class="kw">trello_updates</span>(<span class="st">&quot;Repello - R Reports from Trello&quot;</span>, <span class="dt">prior=</span><span class="st">&quot;old_object.rds&quot;</span>, <span class="dt">save=</span><span class="ot">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>new_sticker &lt;-<span class="st"> &quot;&lt;div class=&#39;sticker&#39;&gt;NEW&lt;/div&gt;&quot;</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>new_headersticker &lt;-<span class="st"> &quot;&lt;div class=&#39;header-sticker&#39;&gt;NEW&lt;/div&gt;&quot;</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>checkmark &lt;-<span class="st"> &quot;&lt;span class=&#39;checkmark&#39;&gt;&lt;div class=&#39;checkmark_stem&#39;&gt;&lt;/div&gt;&lt;div class=&#39;checkmark_kick&#39;&gt;&lt;/div&gt;&lt;/span&gt;&quot;</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(report)){</span>
+<span id="cb16-6"><a href="#cb16-6"></a>  <span class="cf">if</span> (report[[i]]<span class="op">$</span>contains_list<span class="op">==</span><span class="st">&quot;List Available&quot;</span> <span class="op">&amp;</span><span class="st"> </span>(<span class="st">&quot;New Item&quot;</span> <span class="op">%in%</span><span class="st"> </span>(report[[i]]<span class="op">$</span>list_diff)<span class="op">$</span>history <span class="op">|</span><span class="st"> &quot;Newly Completed&quot;</span> <span class="op">%in%</span><span class="st"> </span>(report[[i]]<span class="op">$</span>list_diff)<span class="op">$</span>status)){</span>
+<span id="cb16-7"><a href="#cb16-7"></a>    <span class="cf">if</span> (report[[i]]<span class="op">$</span>card_status<span class="op">==</span><span class="st">&quot;New Card&quot;</span>){</span>
+<span id="cb16-8"><a href="#cb16-8"></a>      <span class="kw">cat</span>(<span class="st">&quot;&lt;h2&gt;&quot;</span>, new_headersticker, report[[i]]<span class="op">$</span>name, <span class="st">&quot;&lt;/h2&gt;&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>)</span>
+<span id="cb16-9"><a href="#cb16-9"></a>    } <span class="cf">else</span> {</span>
+<span id="cb16-10"><a href="#cb16-10"></a>      <span class="kw">cat</span>(<span class="st">&quot;## &quot;</span>, report[[i]]<span class="op">$</span>name, <span class="st">&quot;</span><span class="ch">\n\n</span><span class="st">&quot;</span>)</span>
+<span id="cb16-11"><a href="#cb16-11"></a>    }</span>
+<span id="cb16-12"><a href="#cb16-12"></a>    temp &lt;-<span class="st"> </span>report[[i]]<span class="op">$</span>list_diff <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(history<span class="op">==</span><span class="st">&quot;New Item&quot;</span> <span class="op">|</span><span class="st"> </span>status<span class="op">==</span><span class="st">&quot;Newly Completed&quot;</span>)</span>
+<span id="cb16-13"><a href="#cb16-13"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(temp)){</span>
+<span id="cb16-14"><a href="#cb16-14"></a>      <span class="cf">if</span> (temp<span class="op">$</span>history[j]<span class="op">==</span><span class="st">&quot;New Item&quot;</span>){</span>
+<span id="cb16-15"><a href="#cb16-15"></a>        temp<span class="op">$</span>item[j] &lt;-<span class="st"> </span><span class="kw">paste0</span>(new_sticker, temp<span class="op">$</span>item[j])</span>
+<span id="cb16-16"><a href="#cb16-16"></a>      }</span>
+<span id="cb16-17"><a href="#cb16-17"></a>    }</span>
+<span id="cb16-18"><a href="#cb16-18"></a>    <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(temp)){</span>
+<span id="cb16-19"><a href="#cb16-19"></a>      <span class="cf">if</span> (temp<span class="op">$</span>status[k]<span class="op">==</span><span class="st">&quot;Newly Completed&quot;</span>){</span>
+<span id="cb16-20"><a href="#cb16-20"></a>        temp<span class="op">$</span>complete[k] &lt;-<span class="st"> </span>checkmark</span>
+<span id="cb16-21"><a href="#cb16-21"></a>      } <span class="cf">else</span> {</span>
+<span id="cb16-22"><a href="#cb16-22"></a>        temp<span class="op">$</span>complete[k] &lt;-<span class="st"> &quot; &quot;</span></span>
+<span id="cb16-23"><a href="#cb16-23"></a>      }</span>
+<span id="cb16-24"><a href="#cb16-24"></a>    }</span>
+<span id="cb16-25"><a href="#cb16-25"></a>    temp &lt;-<span class="st"> </span>temp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(complete, item)</span>
+<span id="cb16-26"><a href="#cb16-26"></a>    <span class="kw">colnames</span>(temp) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;&quot;</span>, <span class="st">&quot;Item&quot;</span>)</span>
+<span id="cb16-27"><a href="#cb16-27"></a>    temp <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>(<span class="dt">escape=</span>F, <span class="dt">align=</span><span class="st">&quot;cl&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>trimws <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable_styling</span>(<span class="kw">c</span>(<span class="st">&quot;striped&quot;</span>,<span class="st">&quot;bordered&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">column_spec</span>(<span class="dv">1</span>, <span class="st">&quot;30px&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>cat</span>
+<span id="cb16-28"><a href="#cb16-28"></a>    <span class="kw">cat</span>(<span class="st">&quot;  </span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb16-29"><a href="#cb16-29"></a>  }</span>
+<span id="cb16-30"><a href="#cb16-30"></a>}</span></code></pre></div>
+<div id="project-a" class="section level2">
+<h2>Project A</h2>
+<table class="table table-striped table-bordered" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+</th>
+<th style="text-align:left;">
+Item
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;width: 30px; ">
+<span class="checkmark">
+<div class="checkmark_stem">
+
+</div>
+<div class="checkmark_kick">
+
+</div>
+</span>
+</td>
+<td style="text-align:left;">
+Item 1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="project-d" class="section level2">
+<h2>Project D</h2>
+<table class="table table-striped table-bordered" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+</th>
+<th style="text-align:left;">
+Item
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;width: 30px; ">
+<span class="checkmark">
+<div class="checkmark_stem">
+
+</div>
+<div class="checkmark_kick">
+
+</div>
+</span>
+</td>
+<td style="text-align:left;">
+Item 1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 30px; ">
+<span class="checkmark">
+<div class="checkmark_stem">
+
+</div>
+<div class="checkmark_kick">
+
+</div>
+</span>
+</td>
+<td style="text-align:left;">
+Item 4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 30px; ">
+<span class="checkmark">
+<div class="checkmark_stem">
+
+</div>
+<div class="checkmark_kick">
+
+</div>
+</span>
+</td>
+<td style="text-align:left;">
+Item 5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 30px; ">
+</td>
+<td style="text-align:left;">
+<div class="sticker">
+NEW
+</div>
+Item 6
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 30px; ">
+</td>
+<td style="text-align:left;">
+<div class="sticker">
+NEW
+</div>
+Item 7
+</td>
+</tr>
+</tbody>
+</table>
+<h2>
+<div class="header-sticker">
+NEW
+</div>
+Project E
+</h2>
+<table class="table table-striped table-bordered" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+</th>
+<th style="text-align:left;">
+Item
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;width: 30px; ">
+<span class="checkmark">
+<div class="checkmark_stem">
+
+</div>
+<div class="checkmark_kick">
+
+</div>
+</span>
+</td>
+<td style="text-align:left;">
+<div class="sticker">
+NEW
+</div>
+Item 1
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 30px; ">
+<span class="checkmark">
+<div class="checkmark_stem">
+
+</div>
+<div class="checkmark_kick">
+
+</div>
+</span>
+</td>
+<td style="text-align:left;">
+<div class="sticker">
+NEW
+</div>
+Item 2
+</td>
+</tr>
+<tr>
+<td style="text-align:center;width: 30px; ">
+</td>
+<td style="text-align:left;">
+<div class="sticker">
+NEW
+</div>
+Item 3
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
