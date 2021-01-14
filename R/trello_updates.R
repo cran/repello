@@ -5,12 +5,11 @@
 #' @param prior The name of the prior Trello list you want to compare to.  Defaults to most recently saved Trello object prior to current save.
 #' @param recent The name of the Trello board to compare to a prior Trello object.  By default will use current object grab as most recent object.
 #' @param save Set to TRUE to save a copy of the current Trello object.
-#' @param user_token The user token for an individual's Trello account.
 #' @importFrom dplyr %>%
 #' @keywords repello
 #' @export
 
-trello_updates <- function(board_name, prior=FALSE, recent=FALSE, save=FALSE, user_token=NULL){
+trello_updates <- function(board_name, prior=FALSE, recent=FALSE, save=FALSE){
   fvn.tgsify <- function(data, pattern){
     grep(pattern, data, ignore.case = TRUE) %>% 
       (function(x){data[x]})
@@ -25,20 +24,20 @@ trello_updates <- function(board_name, prior=FALSE, recent=FALSE, save=FALSE, us
     new <- readRDS(paste(recent))
 
   } else if (recent!=FALSE & save==TRUE) {
-    if (is.null(user_token) & !exists("trello_api_token_08192020", envir = globals)){
-      return(warning("Need to input a user token or set the token using 'set_token()'"))
-    }
-    if (is.null(user_token) & exists("trello_api_token_08192020", envir = globals)){
-      user_token <- globals$trello_api_token_08192020
+    if (!exists("key_token_exists", envir = globals)){
+      return(warning("Need to set the key/token using 'set_key_token()'"))
+    } else {
+      key <- globals$trello_api_key_01142021
+      token <- globals$trello_api_token_01142021
     }
     new <- all_checklists(board_name, save=save)
     new <- readRDS(paste(recent))
   } else {
-    if (is.null(user_token) & !exists("trello_api_token_08192020", envir = globals)){
-      return(warning("Need to input a user token or set the token using 'set_token()'"))
-    }
-    if (is.null(user_token) & exists("trello_api_token_08192020", envir = globals)){
-      user_token <- globals$trello_api_token_08192020
+    if (!exists("key_token_exists", envir = globals)){
+      return(warning("Need to set the key/token using 'set_key_token()'"))
+    } else {
+      key <- globals$trello_api_key_01142021
+      token <- globals$trello_api_token_01142021
     }
     new <- all_checklists(board_name, save=save)
   }

@@ -632,9 +632,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="setting-the-user-token" class="section level2">
 <h2>Setting the user token</h2>
-<p>Using this package requires you to have your own Trello account. This package obtains information from Trello boards using API calls. To access Trello information, you first need to obtain your unique user token. Access to a user token can be found by logging into Trello and visiting <code>https://trello.com/app-key</code>, then by clicking on “Manually generate a token”. Once you have generated your token, save it into a text file somewhere on your computer. Be sure to set your working directory to the file location before you attempt to run the code.</p>
+<p>Using this package requires you to have your own Trello account. This package obtains information from Trello boards using API calls. To access Trello information, you first need to obtain your unique user key and token. Access to these can be found by logging into Trello and visiting <code>https://trello.com/app-key</code>, then by clicking on “Manually generate a token”. Once you have generated your key and token, you can either save it into a text file somewhere on your computer or you may manually enter them when prompted. If you opt to save them as text files on your computer, be sure to set your working directory to the file location before you attempt to run the code.</p>
 <p>Setting the user token is a critical first step for using this package. Always be sure to set the token prior to using any of the other functions in this package</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">set_token</span>(<span class="st">&quot;user_token.txt&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">set_key_token</span>(<span class="dt">key_file=</span><span class="st">&quot;user_key.txt&quot;</span>, <span class="dt">token_file=</span><span class="st">&quot;user_token.txt&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#Alternatively, you may leave the arguments blank and manually enter the key and token when prompted</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">set_key_token</span>()</span></code></pre></div>
 </div>
 </div>
 <div id="viewing-information-for-a-specified-trello-board" class="section level1">

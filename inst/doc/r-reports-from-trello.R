@@ -8,7 +8,9 @@ suppressPackageStartupMessages(require(knitr))
 suppressPackageStartupMessages(require(kableExtra))
 
 ## ---- eval=FALSE--------------------------------------------------------------
-#  set_token("user_token.txt")
+#  set_key_token(key_file="user_key.txt", token_file="user_token.txt")
+#  #Alternatively, you may leave the arguments blank and manually enter the key and token when prompted
+#  set_key_token()
 
 ## ---- eval=FALSE--------------------------------------------------------------
 #  activity <- cards_info(get_board_id("Repello - R Reports from Trello"))

@@ -4,14 +4,12 @@
 \alias{get_checklist}
 \title{Get Checklist}
 \usage{
-get_checklist(board_id, card_name, user_token = NULL)
+get_checklist(board_id, card_name)
 }
 \arguments{
 \item{board_id}{The ID of the board you want to browse.}
 
 \item{card_name}{The name of the card you want to view}
-
-\item{user_token}{The user token for an individual's Trello account.}
 }
 \description{
 This function allows you to obtain a checklist for a card of interest.

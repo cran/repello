@@ -3,22 +3,21 @@
 #' This function allows you to obtain a checklist for a card of interest.
 #' @param board_id The ID of the board you want to browse.
 #' @param card_name The name of the card you want to view
-#' @param user_token The user token for an individual's Trello account.
 #' @importFrom httr GET
 #' @importFrom httr content
 #' @keywords repello
 #' @export
 
-get_checklist <- function(board_id, card_name, user_token=NULL){
-  if (is.null(user_token) & !exists("trello_api_token_08192020", envir = globals)){
-    return(warning("Need to input a user token or set the token using 'set_token()'"))
+get_checklist <- function(board_id, card_name){
+  if (!exists("key_token_exists", envir = globals)){
+    return(warning("Need to set the key/token using 'set_key_token()'"))
+  } else {
+    key <- globals$trello_api_key_01142021
+    token <- globals$trello_api_token_01142021
   }
-  if (is.null(user_token) & exists("trello_api_token_08192020", envir = globals)){
-    user_token <- globals$trello_api_token_08192020
-  }
-  activity <- cards_info(board_id, user_token)
+  activity <- cards_info(board_id)
   ID <- activity[which(activity$Card==card_name),]$ID
-  checklist_url <- paste0("https://api.trello.com/1/cards/", ID, "/checklists?key=5b771b8595d9fa76ac8724387d9642b4&token=", user_token)
+  checklist_url <- paste0("https://api.trello.com/1/cards/", ID, "/checklists?key=", key, "&token=", token)
   checklist_info <- GET(checklist_url)
   checklist_content <- content(checklist_info)
   if (length(checklist_content)==0){

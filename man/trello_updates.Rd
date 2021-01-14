@@ -4,13 +4,7 @@
 \alias{trello_updates}
 \title{Trello Updates}
 \usage{
-trello_updates(
-  board_name,
-  prior = FALSE,
-  recent = FALSE,
-  save = FALSE,
-  user_token = NULL
-)
+trello_updates(board_name, prior = FALSE, recent = FALSE, save = FALSE)
 }
 \arguments{
 \item{board_name}{The name of the board you want to browse.}
@@ -20,8 +14,6 @@ trello_updates(
 \item{recent}{The name of the Trello board to compare to a prior Trello object.  By default will use current object grab as most recent object.}
 
 \item{save}{Set to TRUE to save a copy of the current Trello object.}
-
-\item{user_token}{The user token for an individual's Trello account.}
 }
 \description{
 This function allows you to check for updates to all cards on a Trello board, comparing to a prior board setting.

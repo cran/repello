@@ -84,18 +84,22 @@ suppressPackageStartupMessages(require(kableExtra))
 ## Setting the user token
 Using this package requires you to have your own Trello account.  This package
 obtains information from Trello boards using API calls.  To access Trello
-information, you first need to obtain your unique user token.  Access to a user
-token can be found by logging into Trello and visiting `https://trello.com/app-key`,
+information, you first need to obtain your unique user key and token.  Access to 
+these can be found by logging into Trello and visiting `https://trello.com/app-key`,
 then by clicking on "Manually generate a token".  Once you have generated your 
-token, save it into a text file somewhere on your computer.  Be sure to set your
-working directory to the  file location before you attempt to run the code.
+key and token, you can either save it into a text file somewhere on your 
+computer or you may manually enter them when prompted.  If you opt to save them
+as text files on your computer, be sure to set your working directory to the 
+file location before you attempt to run the code.
 
 Setting the user token is a critical first step for using this package.  Always
 be sure to set the token prior to using any of the other functions in this
 package
 
 ```{r, eval=FALSE}
-set_token("user_token.txt")
+set_key_token(key_file="user_key.txt", token_file="user_token.txt")
+#Alternatively, you may leave the arguments blank and manually enter the key and token when prompted
+set_key_token()
 ```
 
 # Viewing information for a specified Trello board

@@ -4,12 +4,10 @@
 \alias{get_board_id}
 \title{Get Board ID}
 \usage{
-get_board_id(board_name, user_token = NULL)
+get_board_id(board_name)
 }
 \arguments{
 \item{board_name}{The name of the board you want to browse.}
-
-\item{user_token}{The user token for an individual's Trello account.}
 }
 \description{
 This function allows you to obtain the ID of the Trello board you want to view.

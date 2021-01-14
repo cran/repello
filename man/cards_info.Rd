@@ -4,12 +4,10 @@
 \alias{cards_info}
 \title{Get Cards Information}
 \usage{
-cards_info(board_id, user_token = NULL)
+cards_info(board_id)
 }
 \arguments{
 \item{board_id}{The ID of the board you want to browse.}
-
-\item{user_token}{The user token for an individual's Trello account.}
 }
 \description{
 This function allows you to obtain the cards and the date of most recent modification for the cards on a specified board.
